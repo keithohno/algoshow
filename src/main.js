@@ -21,8 +21,27 @@ const store = new Vuex.Store({
     point_list: [],
   },
   mutations: {
-    add_point(state, point) {
-      state.point_list.push(point);
+    add_point(state, prm) {
+      for (let p of state.point_list) {
+        if (p.x === prm.x && p.y === prm.y) {
+          return;
+        }
+      }
+      state.point_list.push({
+        x: prm.x,
+        y: prm.y,
+        key: state.point_list.length,
+      });
+    },
+    del_point(state, key) {
+      for (let i = key + 1; i < state.point_list.length; i++) {
+        state.point_list[i].key--;
+      }
+      state.point_list.splice(key, 1);
+    },
+    move_point(state, prm) {
+      state.point_list[prm.key].x = prm.x;
+      state.point_list[prm.key].y = prm.y;
     },
   },
 });
