@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import Vuex from "vuex";
 import HomeScreen from "./components/HomeScreen";
-import SampleScreen from "./components/SampleScreen";
+import SandboxScreen from "./components/SandboxScreen";
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -11,7 +11,7 @@ Vue.use(Vuex);
 
 const routes = [
   { path: "/", component: HomeScreen },
-  { path: "/sample", component: SampleScreen },
+  { path: "/sandbox", component: SandboxScreen },
 ];
 
 const router = new VueRouter({ mode: "history", routes });
@@ -19,8 +19,12 @@ const router = new VueRouter({ mode: "history", routes });
 const store = new Vuex.Store({
   state: {
     point_list: [],
+    count: 0,
   },
   mutations: {
+    increment(state) {
+      state.count++;
+    },
     add_point(state, prm) {
       for (let p of state.point_list) {
         if (p.x === prm.x && p.y === prm.y) {
@@ -40,8 +44,8 @@ const store = new Vuex.Store({
       state.point_list.splice(key, 1);
     },
     move_point(state, prm) {
-      state.point_list[prm.key].x = prm.x;
-      state.point_list[prm.key].y = prm.y;
+      state.point_list[prm.key].x = Math.min(396, Math.max(4, prm.x));
+      state.point_list[prm.key].y = Math.min(396, Math.max(4, prm.y));
     },
   },
 });
