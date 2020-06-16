@@ -15,7 +15,7 @@ const routes = [
   { path: "/redblacktrees", component: RedBlackTreeScreen },
 ];
 
-const router = new VueRouter({ mode: "history", routes });
+const router = new VueRouter({ base: "/algoshow/", mode: "history", routes });
 
 new Vue({
   router,
