@@ -8,7 +8,7 @@
       width="400"
     >
       <circle
-        v-for="p in this.$store.state.point_list"
+        v-for="p in $store.state.sandbox.point_list"
         :key="p.key"
         :cx="p.x"
         :cy="p.y"
@@ -79,7 +79,7 @@ export default {
     let self = this;
     this.sprops.add_action("mouse_move", (e) => {
       if (self.moving) {
-        self.$store.commit("move_point", {
+        self.$store.commit("sandbox/move_point", {
           x:
             self.current_point_x + self.$props.sprops.x - self.$props.sprops.ix,
           y:
@@ -93,7 +93,7 @@ export default {
       self.moving = false;
       self.current_point_key = -1;
       if (self.creating) {
-        self.$store.commit("add_point", {
+        self.$store.commit("sandbox/add_point", {
           x: self.$props.sprops.rx,
           y: self.$props.sprops.ry,
         });
@@ -102,7 +102,7 @@ export default {
     });
     this.sprops.add_action("mouse_r_up", () => {
       if (self.deleting) {
-        self.$store.commit("del_point", self.current_point_key);
+        self.$store.commit("sandbox/del_point", self.current_point_key);
         self.deleting = false;
       }
     });
