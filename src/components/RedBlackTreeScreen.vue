@@ -7,15 +7,17 @@
       <line
         v-for="node in $store.state.redblacktrees.tree.nodes"
         :key="node.item + 'l1'"
-        :x1="30 + node.pos * 40"
-        :y1="50 + node.depth * 60"
+        :x1="30 + node.display_x"
+        :y1="50 + node.display_y"
         :x2="
-          node.left.item === null ? 10 + node.pos * 40 : 30 + node.left.pos * 40
+          node.left.item === null
+            ? 10 + node.display_x
+            : 30 + node.left.display_x
         "
         :y2="
           node.left.item === null
-            ? 70 + node.depth * 60
-            : 50 + node.left.depth * 60
+            ? 70 + node.display_y
+            : 50 + node.left.display_y
         "
         stroke="black"
         stroke-width="4"
@@ -23,17 +25,17 @@
       <line
         v-for="node in $store.state.redblacktrees.tree.nodes"
         :key="node.item + 'l2'"
-        :x1="30 + node.pos * 40"
-        :y1="50 + node.depth * 60"
+        :x1="30 + node.display_x"
+        :y1="50 + node.display_y"
         :x2="
           node.right.item === null
-            ? 50 + node.pos * 40
-            : 30 + node.right.pos * 40
+            ? 50 + node.display_x
+            : 30 + node.right.display_x
         "
         :y2="
           node.right.item === null
-            ? 70 + node.depth * 60
-            : 50 + node.right.depth * 60
+            ? 70 + node.display_y
+            : 50 + node.right.display_y
         "
         stroke="black"
         stroke-width="4"
@@ -41,9 +43,11 @@
       <circle
         v-for="node in $store.state.redblacktrees.tree.nodes"
         :key="node.item"
-        :cx="30 + node.pos * 40"
-        :cy="50 + node.depth * 60"
+        :opacity="node.opacity"
+        :cx="30 + node.display_x"
+        :cy="50 + node.display_y"
         :stroke="node.color === 'r' ? 'red' : 'black'"
+        @click="hide(node.item)"
         r="20"
         stroke-width="5"
         fill="white"
@@ -51,8 +55,9 @@
       <text
         v-for="node in $store.state.redblacktrees.tree.nodes"
         :key="node.item + 't'"
-        :x="30 + node.pos * 40"
-        :y="50 + node.depth * 60"
+        :opacity="node.opacity"
+        :x="30 + node.display_x"
+        :y="50 + node.display_y"
         text-anchor="middle"
         dy=".3em"
       >
@@ -78,7 +83,11 @@ export default {
     insert() {
       this.$store.commit("redblacktrees/insert", this.new_node);
       this.$store.commit("redblacktrees/balance", this.new_node);
+      this.$store.dispatch("redblacktrees/animate");
       this.new_node = "";
+    },
+    hide(item) {
+      this.$store.commit("redblacktrees/toggle_hide", item);
     },
   },
 };
